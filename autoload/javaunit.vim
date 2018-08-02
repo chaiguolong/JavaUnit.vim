@@ -17,6 +17,11 @@ else
     let s:JavaUnit_tempdir = g:JavaUnit_Home .s:Fsep .'bin'
 endif
 
+let s:JavaUnit_Home_lib = g:JavaUnit_Home .s:Fsep .'lib/*'
+
+
+echom s:JavaUnit_Home_lib
+
 let s:JavaUnit_TestMethod_Source =
             \g:JavaUnit_Home
             \.s:Fsep
@@ -57,6 +62,8 @@ function javaunit#TestMethod(args,...)
                         \.s:JavaUnit_tempdir
                         \.s:Psep
                         \.get(g:,'JavaComplete_LibsPath','.')
+                        \.s:Psep
+                        \.s:JavaUnit_Home_lib
                         \."' com.wsdjeg.util.TestMethod "
                         \.currentClassName
                         \.' '
@@ -81,6 +88,8 @@ function javaunit#TestMethod(args,...)
                         \.s:JavaUnit_tempdir
                         \.s:Psep
                         \.get(g:,'JavaComplete_LibsPath','.')
+                        \.s:Psep
+                        \.s:JavaUnit_Home_lib
                         \."' com.wsdjeg.util.TestMethod "
                         \.currentClassName
                         \.' '
@@ -93,7 +102,14 @@ endfunction
 function javaunit#TestAllMethods()
     let line = getline(search("package","nb",getline("0$")))
     let currentClassName = split(split(line," ")[1],";")[0].".".expand("%:t:r")
-    let cmd="java -cp '" . s:JavaUnit_tempdir.s:Psep.g:JavaComplete_LibsPath . "' com.wsdjeg.util.TestMethod " . currentClassName
+    let cmd="java -cp '"
+                \. s:JavaUnit_tempdir
+                \.s:Psep
+                \.get(g:,'JavaComplete_LibsPath' ,'.') 
+                \.s:Psep
+                \.s:JavaUnit_Home_lib
+                \."' com.wsdjeg.util.TestMethod " 
+                \. currentClassName
     call javaunit#util#ExecCMD(cmd)
 endfunction
 
@@ -169,6 +185,8 @@ function! javaunit#TestMain(...) abort
                     \.s:JavaUnit_tempdir
                     \.s:Psep
                     \.get(g:,'JavaComplete_LibsPath','.')
+                    \.s:Psep
+                    \.s:JavaUnit_Home_lib
                     \."' "
                     \.currentClassName
                     \.' '
