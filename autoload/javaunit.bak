@@ -20,6 +20,7 @@ endif
 let s:JavaUnit_Home_lib = g:JavaUnit_Home .s:Fsep .'lib/*'
 
 
+echom s:JavaUnit_Home_lib
 
 let s:JavaUnit_TestMethod_Source =
             \g:JavaUnit_Home
@@ -29,25 +30,6 @@ let s:JavaUnit_TestMethod_Source =
 function! javaunit#Compile() abort
     silent exec '!javac -encoding utf8 -d '.s:JavaUnit_tempdir.' '.s:JavaUnit_TestMethod_Source 
 endfunction
-
-
-" function! javaunit#CompilePro()
-"     silent exec  "!{javac -d "
-"                 \.s:JavaUnit_tempdir 
-"                 \." *.java}"
-" endfunction
-
-" call javaunit#util#ExecCMD(cmd)
-" call javaunit#CompilePro()
-
-
-function javaunit#CompilePro()
-    let cmd="javac -d '"
-                \.s:JavaUnit_tempdir
-                \."' *.java"
-    call javaunit#util#ExecCMD(cmd)
-endfunction
-
 
 if findfile(s:JavaUnit_tempdir.join(['','com','wsdjeg','util','TestMethod.class'],s:Fsep))==""
     call javaunit#Compile()
@@ -203,8 +185,6 @@ function! javaunit#TestMain(...) abort
                     \.s:JavaUnit_tempdir
                     \.s:Psep
                     \.get(g:,'JavaComplete_LibsPath','.')
-                    \.s:Psep
-                    \.s:JavaUnit_Home_lib
                     \."' "
                     \.currentClassName
                     \.' '

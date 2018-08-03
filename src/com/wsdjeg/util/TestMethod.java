@@ -7,6 +7,7 @@ public class TestMethod{
     public static void main(String[] args) {
         if(args.length == 2){
             testSpecifiedMethod(args[0],args[1]);
+            // testSpecifiedMethod("cn.itheima.jdbc.test.TestUtils","testFindUserById");
         }else if (args.length == 1) {
             testAllMethods(args[0]);
         }else if (args.length > 2){

@@ -4,7 +4,8 @@ import java.lang.reflect.Method;
 
 public class GenerateMethod {
     public static void main(String[] args) {
-        System.out.println(listMethos(args[0]));
+        // System.out.println(listMethos(args[0]));
+        System.out.println(listMethos("com.wsdjeg.util.HelloWorld"));
     }
     private static String listMethos(String name){
         Class<?> clazz = null;

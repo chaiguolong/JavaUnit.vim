@@ -32,6 +32,10 @@ command! -nargs=? -complete=file
             \ call javaunit#NewTestClass(expand("%:t:r"))
 
 command! -nargs=0
+            \ JavaUnitServerCompilePro
+            \ call javaunit#CompilePro()
+
+command! -nargs=0
             \ JavaUnitServerCompile
             \ call javaunit#Compile()
 
