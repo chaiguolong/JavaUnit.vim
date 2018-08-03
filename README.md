@@ -1,4 +1,7 @@
 ###JavaUnit.vim
+自己对juni进行了个性化定制 1.将自己的classpath指向到该项目下的lib包和bin包,就能够进行正常的测试 2.针对原先对有外部jar包,不能测试的情况(具有情况不是很清楚,毕竟我对vimscript也不是很熟,我的情况是在测试连接数据库的情况 下,无法找到驱动包,故在autoload目录下的javaUnit.vim中修改了源代码,加入了lib包的classpath引入,从而能够测试 3.加入了对项目的编译功能,当然目前还需要手动更改目录和按照引用顺序进行编译,在javaUnit.vim中加入了编译用到的函数,在plug文件夹中 的vim文件新定义了调用方法,并且通过与测试方法相同的显示界面,虽然并没有什么信息,但这样不会导致整个界面混乱 4.后续想配合vim-Rooter插件,不需要更改路径进行编译,通过switch,智能按照引用顺序进行编译
+
+目前插件已经可以编译和运行在一个插件上了,还是挺方便的,感谢原作者
 
 [![Join the chat at https://gitter.im/wsdjeg/JavaUnit.vim](https://badges.gitter.im/wsdjeg/JavaUnit.vim.svg)](https://gitter.im/wsdjeg/JavaUnit.vim?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 [![Build Status](https://travis-ci.org/wsdjeg/JavaUnit.vim.svg?branch=master)](https://travis-ci.org/wsdjeg/JavaUnit.vim)
