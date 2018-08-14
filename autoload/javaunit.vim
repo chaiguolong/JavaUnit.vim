@@ -20,6 +20,25 @@ endif
 let s:JavaUnit_Home_lib = g:JavaUnit_Home .s:Fsep .'lib/*'
 
 
+let s:filepath = expand('%:p')
+
+let s:filetype = expand('%:e')
+		
+let s:cppath = split(s:filepath, "src")[0]
+
+let s:webapp = split(s:cppath,s:Fsep)[4]
+
+
+
+let s:JavaUnit_ProPath = s:JavaUnit_tempdir.s:Fsep.s:webapp
+
+let s:apache_webapps_pro = '/Users/mymac/Library/apache-tomcat-7.0.90/webapps/'.split(s:cppath,s:Fsep)[4]
+
+function! javaunit#Test() abort
+		let cmd='rm -rf '.s:apache_webapps_pro.'&&mkdir '.s:apache_webapps_pro.'&& cd '.s:cppath.'&& cp -rf WebContent/*  /Users/mymac/Library/apache-tomcat-7.0.90/webapps/'.split(s:cppath,s:Fsep)[4].'&& cp -rf '.s:JavaUnit_tempdir.'/'.s:webapp.' /Users/mymac/Library/apache-tomcat-7.0.90/webapps/'.s:webapp.'/WEB-INF/classes/ && cp -rf '.s:JavaUnit_Home_lib .' /Users/mymac/Library/apache-tomcat-7.0.90/webapps/'.s:webapp.'/WEB-INF/lib/&&echo "部署成功,请按q键退出"'
+		call javaunit#util#ExecCMD(cmd)
+endfunction
+
 
 let s:JavaUnit_TestMethod_Source =
             \g:JavaUnit_Home
@@ -31,20 +50,23 @@ function! javaunit#Compile() abort
 endfunction
 
 
-" function! javaunit#CompilePro()
-"     silent exec  "!{javac -d "
-"                 \.s:JavaUnit_tempdir 
-"                 \." *.java}"
-" endfunction
-
-" call javaunit#util#ExecCMD(cmd)
-" call javaunit#CompilePro()
-
 
 function javaunit#CompilePro()
-    let cmd="javac -d '"
-                \.s:JavaUnit_tempdir
-                \."' *.java"
+	" if globpath(s:JavaUnit_ProPath.'/.', '*') != ''
+	" if findfile(s:webapp, s:JavaUnit_tempdir."/.") == s:webapp
+	if !empty(glob(s:JavaUnit_ProPath))
+		let cmd="javac -d '"
+				\.s:JavaUnit_ProPath
+				\."' *.java"
+				\."&& echo '编译成功,请按q键退出'"
+		" let cmd = "echo 111"
+	else
+		let cmd="mkdir ".s:JavaUnit_ProPath."&& javac -d '"
+				\.s:JavaUnit_ProPath
+				\."' *.java"
+				\."&& echo '编译成功,请按q键退出'"
+		" let cmd = "echo 222"
+	endif
     call javaunit#util#ExecCMD(cmd)
 endfunction
 
@@ -77,7 +99,9 @@ function javaunit#TestMethod(args,...)
                         \.cwords
         else
             let cmd="java -cp '"
-                        \.s:JavaUnit_tempdir
+                        \.s:JavaUnit_ProPath
+						\.s:Psep
+						\.s:JavaUnit_tempdir
                         \.s:Psep
                         \.get(g:,'JavaComplete_LibsPath','.')
                         \.s:Psep
@@ -103,6 +127,8 @@ function javaunit#TestMethod(args,...)
                         \.a:args
         else
             let cmd="java -cp '"
+                        \.s:JavaUnit_ProPath
+						\.s:Psep
                         \.s:JavaUnit_tempdir
                         \.s:Psep
                         \.get(g:,'JavaComplete_LibsPath','.')
@@ -121,6 +147,8 @@ function javaunit#TestAllMethods()
     let line = getline(search("package","nb",getline("0$")))
     let currentClassName = split(split(line," ")[1],";")[0].".".expand("%:t:r")
     let cmd="java -cp '"
+				\.s:JavaUnit_ProPath
+				\.s:Psep
                 \. s:JavaUnit_tempdir
                 \.s:Psep
                 \.get(g:,'JavaComplete_LibsPath' ,'.') 
@@ -200,6 +228,8 @@ function! javaunit#TestMain(...) abort
                     \.(len(a:000) > 0 ? join(a:000,' ') : '')
     else
         let cmd="java -cp '"
+					\.s:JavaUnit_ProPath
+					\.s:Psep
                     \.s:JavaUnit_tempdir
                     \.s:Psep
                     \.get(g:,'JavaComplete_LibsPath','.')

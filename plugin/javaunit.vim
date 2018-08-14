@@ -36,6 +36,10 @@ command! -nargs=0
             \ call javaunit#CompilePro()
 
 command! -nargs=0
+            \ JavaUnitTest
+            \ call javaunit#Test()
+
+command! -nargs=0
             \ JavaUnitServerCompile
             \ call javaunit#Compile()
 
